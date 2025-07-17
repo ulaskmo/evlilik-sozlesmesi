@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evlilik Sözleşmesi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: sparkle 10s linear infinite;
+        }
+
+        @keyframes sparkle {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(-50px) translateY(-50px); }
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        .parties {
+            background: linear-gradient(135deg, #fff0f5, #ffeef8);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ff6b9d;
+        }
+
+        .parties h3 {
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+        }
+
+        .party {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .party strong {
+            color: #333;
+        }
+
+        .intro {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 107, 157, 0.1);
+            border-radius: 10px;
+        }
+
+        .article {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 2px solid #ffeef8;
+            transition: transform 0.3s ease;
+        }
+
+        .article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .article h4 {
+            color: #ff6b9d;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ffeef8;
+            padding-bottom: 10px;
+        }
+
+        .article ol {
+            margin-left: 20px;
+        }
+
+        .article li {
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        .signature-section {
+            background: linear-gradient(135deg, #fff0f5, #ffeef8);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .date-location {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .date-location div {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .signature-box {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .signature-box h5 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .signature-canvas {
+            border: 2px solid #ff6b9d;
+            border-radius: 8px;
+            margin: 20px 0;
+            cursor: crosshair;
+            background: #fafafa;
+            display: block;
+        }
+
+        .signature-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .signature-btn {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .signature-btn:hover {
+            background: #ff8fab;
+            transform: translateY(-2px);
+        }
+
+        .signature-label {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .hearts {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: rgba(255, 107, 157, 0.3);
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .action-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .print-btn, .submit-btn {
+            background: linear-gradient(135deg, #ff6b9d, #ff8fab);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 107, 157, 0.3);
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #28a745, #34ce57);
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .print-btn:hover, .submit-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .print-btn:hover {
+            box-shadow: 0 15px 35px rgba(255, 107, 157, 0.4);
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .signatures {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .date-location {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hearts">💕</div>
+        
+        <div class="header">
+            <h1 class="title">📝 Evlilik Sözleşmesi</h1>
+            <p class="subtitle">(Şaka Ama Ciddi Gibi)</p>
+        </div>
+
+        <div class="content">
+            <div class="parties">
+                <h3>Taraflar</h3>
+                <div class="party">
+                    <strong>1. Taraf (Gelin Adayı):</strong> Nidanur Cansaran
+                </div>
+                <div class="party">
+                    <strong>2. Taraf (Damat Adayı):</strong> Ulaş Karamustafaoğlu
+                </div>
+            </div>
+
+            <div class="intro">
+                Aşağıdaki maddeler, tamamen eğlence amaçlı hazırlanmış olup, 
+                gönül rızasıyla gülerek imzalanması beklenmektedir. 💘
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">☕</span>Madde 1 – Kahve Yetkisi</h4>
+                <ol>
+                    <li>Taraf 1, sabah kahvesini uyanır uyanmaz, somurtmadan getirmekle yükümlüdür.</li>
+                    <li>Taraf 2, kahveye şekersiz dediğinde "emin misin?" diye sormayacaktır.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">📺</span>Madde 2 – Dizi İzleme Protokolü</h4>
+                <ol>
+                    <li>Ortak dizi seçildiğinde, bölümler gizlice önden izlenmeyecektir.</li>
+                    <li>Spoiler veren taraf, 1 hafta boyunca TV kumandasından men edilecektir.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">🍽️</span>Madde 3 – Yemek Savaşları</h4>
+                <ol>
+                    <li>Ne yiyeceğimize karar verilemiyorsa, karar hakkı Taraf 1'e aittir.</li>
+                    <li>Taraf 2, "Farketmez" cevabından sonra gelen her yemeği gönül rahatlığıyla yemek zorundadır.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">💚</span>Madde 4 – Kıskançlık Maddesi</h4>
+                <ol>
+                    <li>Taraf 1, Damat Adayı'nın konsol oyunlarındaki rakiplerini kıskanmayacaktır.</li>
+                    <li>Taraf 2, Taraf 1'in tüm Instagram hikayelerine kalp bırakmakla yükümlüdür.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">🍫</span>Madde 5 – Tatlı Hakkı</h4>
+                <ol>
+                    <li>Taraf 1'in canı tatlı çektiğinde "yeni yedik ya" demek yasaktır.</li>
+                    <li>Çikolata stoğu tükenmeyecek şekilde düzenli olarak yenilenecektir.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">🤗</span>Madde 6 – Sarılma Zorunluluğu</h4>
+                <ol>
+                    <li>Günde minimum 3 sarılma yapılacaktır. Sabah – Akşam – Arada.</li>
+                    <li>Sarılmama durumunda gönül alma hediyesiyle telafi zorunludur.</li>
+                </ol>
+            </div>
+
+            <div class="article">
+                <h4><span class="emoji">❤️</span>Madde 7 – Tartışma Sonrası Kuralı</h4>
+                <ol>
+                    <li>Tartışma sonunda kim haklı olursa olsun, Taraf 2 özür dilemekle mükelleftir.</li>
+                    <li>Sarılmadan uyumak yasaktır.</li>
+                </ol>
+            </div>
+
+            <div class="signature-section">
+                <div class="date-location">
+                    <div>📅 <strong>Tarih:</strong> 17/07/2025</div>
+                    <div>📍 <strong>Yer:</strong> Kalplerimiz 💘</div>
+                </div>
+
+                <div class="signatures">
+                    <div class="signature-box">
+                        <h5>Taraf 1 (Gelin Adayı)</h5>
+                        <canvas id="signature1" class="signature-canvas" width="250" height="100"></canvas>
+                        <div class="signature-controls">
+                            <button class="signature-btn" onclick="clearSignature('signature1')">🗑️ Temizle</button>
+                        </div>
+                        <div class="signature-label">Nidanur Cansaran</div>
+                    </div>
+                    <div class="signature-box">
+                        <h5>Taraf 2 (Damat Adayı)</h5>
+                        <canvas id="signature2" class="signature-canvas" width="250" height="100"></canvas>
+                        <div class="signature-controls">
+                            <button class="signature-btn" onclick="clearSignature('signature2')">🗑️ Temizle</button>
+                        </div>
+                        <div class="signature-label">Ulaş Karamustafaoğlu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button class="submit-btn" id="submitBtn" onclick="submitContract()">
+            💾 Kaydet ve Gönder
+        </button>
+        <button class="print-btn" onclick="window.print()">
+            📄 PDF olarak yazdır
+        </button>
+    </div>
+
+    <script>
+        // Signature functionality
+        let isDrawing = false;
+        let currentCanvas = null;
+        let currentContext = null;
+
+        function initializeSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // Set up canvas properties
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile
+            canvas.addEventListener('touchstart', handleTouch);
+            canvas.addEventListener('touchmove', handleTouch);
+            canvas.addEventListener('touchend', stopDrawing);
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                currentCanvas = canvas;
+                currentContext = ctx;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+            
+            function draw(e) {
+                if (!isDrawing || currentCanvas !== canvas) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                ctx.lineTo(x, y);
+                ctx.stroke();
+            }
+            
+            function stopDrawing() {
+                if (currentCanvas === canvas) {
+                    isDrawing = false;
+                    currentCanvas = null;
+                    currentContext = null;
+                }
+            }
+            
+            function handleTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                                 e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
+        }
+
+        function clearSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Check if both signatures are present
+        function hasSignatures() {
+            const canvas1 = document.getElementById('signature1');
+            const canvas2 = document.getElementById('signature2');
+            const ctx1 = canvas1.getContext('2d');
+            const ctx2 = canvas2.getContext('2d');
+            
+            // Check if canvas has any drawing
+            const imageData1 = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+            const imageData2 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
+            
+            let hasDrawing1 = false;
+            let hasDrawing2 = false;
+            
+            for (let i = 0; i < imageData1.data.length; i += 4) {
+                if (imageData1.data[i + 3] > 0) { // Alpha channel
+                    hasDrawing1 = true;
+                    break;
+                }
+            }
+            
+            for (let i = 0; i < imageData2.data.length; i += 4) {
+                if (imageData2.data[i + 3] > 0) { // Alpha channel
+                    hasDrawing2 = true;
+                    break;
+                }
+            }
+            
+            return hasDrawing1 && hasDrawing2;
+        }
+
+        // Generate PDF and send email
+        async function submitContract() {
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Check if both signatures are present
+            if (!hasSignatures()) {
+                alert('Lütfen her iki tarafın da imzasını tamamlayın! 💕');
+                return;
+            }
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading"></span> Gönderiliyor...';
+            
+            try {
+                // Create a temporary element for PDF generation
+                const printContent = document.querySelector('.container').cloneNode(true);
+                
+                // Remove hearts animation for PDF
+                const hearts = printContent.querySelector('.hearts');
+                if (hearts) hearts.remove();
+                
+                // Create a new window for PDF generation
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Evlilik Sözleşmesi - Nidanur & Ulaş</title>
+                        <style>
+                            ${document.querySelector('style').innerHTML}
+                            body { background: white !important; padding: 20px !important; }
+                            .container { box-shadow: none !important; }
+                            .action-buttons { display: none !important; }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContent.outerHTML}
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+                
+                // Wait a moment for content to load
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 1000);
+                
+                // Simulate email sending (in a real application, this would be a server-side operation)
+                await simulateEmailSending();
+                
+                // Success message
+                alert('🎉 Sözleşme başarıyla kaydedildi ve e-posta adreslerine gönderildi!\n\n📧 nidanurcansaran@gmail.com\n📧 ulaskmo@gmail.com\n\n💕 Mutluluklar dileriz!');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Bir hata oluştu. Lütfen tekrar deneyin.');
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '💾 Kaydet ve Gönder';
+            }
+        }
+
+        // Simulate email sending process
+        function simulateEmailSending() {
+            return new Promise((resolve) => {
+                // Simulate API call delay
+                setTimeout(() => {
+                    console.log('Email sent to:');
+                    console.log('- nidanurcansaran@gmail.com');
+                    console.log('- ulaskmo@gmail.com');
+                    resolve();
+                }, 2000);
+            });
+        }
+
+        // Sayfa yüklendiğinde animasyonlar ve imza alanlarını başlat
+        document.addEventListener('DOMContentLoaded', function() {
+            const articles = document.querySelectorAll('.article');
+            
+            articles.forEach((article, index) => {
+                setTimeout(() => {
+                    article.style.opacity = '0';
+                    article.style.transform = 'translateY(20px)';
+                    article.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        article.style.opacity = '1';
+                        article.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+            
+            // Initialize signature canvases
+            initializeSignature('signature1');
+            initializeSignature('signature2');
+        });
+
+        // Kalp animasyonu
+        setInterval(() => {
+            const hearts = document.querySelector('.hearts');
+            hearts.innerHTML = hearts.innerHTML === '💕' ? '💖' : '💕';
+        }, 2000);
+    </script>
+</body>
+</html>
